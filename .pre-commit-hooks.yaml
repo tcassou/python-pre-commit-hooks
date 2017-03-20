@@ -1,0 +1,10 @@
+- id: do_not_commit
+  name: Block if "DO NOT COMMIT" is found
+  entry: DO NOT COMMIT
+  language: pcre
+  files: ''
+- id: remove_ipython_notebook_outputs
+  name: Remove ipython notebook outputs
+  entry: strip_ipynb.sh
+  files: \.ipynb$
+  language: script
