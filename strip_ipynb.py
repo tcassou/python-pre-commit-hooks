@@ -15,11 +15,11 @@ def strip_output_from_cell(cell):
         cell['outputs'] = []
         modified = True
 
-    if 'prompt_number' in cell.get('prompt_number', None):
+    if cell.get('prompt_number', None):
         cell['prompt_number'] = None
         modified = True
 
-    if 'execution_count' in cell.get('execution_count', None):
+    if cell.get('execution_count', None):
         cell['execution_count'] = None
         modified = True
 
