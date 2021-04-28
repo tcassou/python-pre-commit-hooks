@@ -10,20 +10,27 @@ def strip_output_from_cell(cell):
     Remove variable fields such as outputs, prompt_number/execution_count from an IPython notebook.
     This allows a cleaner versioning with diffs only showing modifications of input cells.
     """
-    if 'outputs' in cell:
+    modified = False
+    if cell.get('outputs', []):
         cell['outputs'] = []
-    if 'prompt_number' in cell:
-        del cell['prompt_number']
-    if 'execution_count' in cell:
-        cell['execution_count'] = None
+        modified = True
 
+    if 'prompt_number' in cell.get('prompt_number', None):
+        cell['prompt_number'] = None
+        modified = True
+
+    if 'execution_count' in cell.get('execution_count', None):
+        cell['execution_count'] = None
+        modified = True
+
+    return modified
 
 def clean_notebook(file):
     notebook = json.load(open(file, 'r'))
     cells = notebook['worksheets'][0]['cells'] if 'worksheets' in notebook else notebook['cells']
-    for cell in cells:
-        strip_output_from_cell(cell)
-    json.dump(notebook, open(file, 'w'), sort_keys=True, indent=1, separators=(',', ': '))
+
+    if any(strip_output_from_cell(cell) for cell in cells):
+        json.dump(notebook, open(file, 'w'), sort_keys=True, indent=1, separators=(',', ': '))
 
 
 for file in files:
