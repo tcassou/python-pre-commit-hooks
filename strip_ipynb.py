@@ -23,7 +23,7 @@ def clean_notebook(file):
     cells = notebook['worksheets'][0]['cells'] if 'worksheets' in notebook else notebook['cells']
     for cell in cells:
         strip_output_from_cell(cell)
-    json.dump(notebook, open(file, 'w'), sort_keys=True, indent=2, separators=(',', ': '))
+    json.dump(notebook, open(file, 'w'), sort_keys=True, indent=1, separators=(',', ': '))
 
 
 for file in files:
