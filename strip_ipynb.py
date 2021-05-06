@@ -30,7 +30,7 @@ def get_notebook_cells(notebook):
     return notebook['worksheets'][0]['cells'] if 'worksheets' in notebook else notebook['cells']
 
 
-def set_notebook_cells(notebook, celles):
+def set_notebook_cells(notebook, cells):
     """Set notebook cells the right way depending on the version/structure."""
     if 'worksheets' in notebook:
         notebook['worksheets'][0]['cells'] = cells
