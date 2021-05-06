@@ -22,7 +22,7 @@ def strip_output_from_cell(cell):
         cell['execution_count'] = None
         modified = True
 
-    return modifed, cell
+    return modified, cell
 
 
 def get_notebook_cells(notebook):
@@ -47,8 +47,8 @@ def clean_notebook(file):
     modif_cells = []
     clean_cells = []
     for cell in get_notebook_cells(notebook):
-        modifed, clean_cell = strip_output_from_cell(cell)
-        fixed_cells.append(modifed)
+        modified, clean_cell = strip_output_from_cell(cell)
+        fixed_cells.append(modified)
         clean_cells.append(clean_cell)
 
     if any(modif_cells):
