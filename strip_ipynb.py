@@ -22,15 +22,38 @@ def strip_output_from_cell(cell):
         cell['execution_count'] = None
         modified = True
 
-    return modified
+    return modifed, cell
+
+
+def get_notebook_cells(notebook):
+    """Retrieve notebook cells depending on the version/structure."""
+    return notebook['worksheets'][0]['cells'] if 'worksheets' in notebook else notebook['cells']
+
+
+def set_notebook_cells(notebook, celles):
+    """Set notebook cells the right way depending on the version/structure."""
+    if 'worksheets' in notebook:
+        notebook['worksheets'][0]['cells'] = cells
+    else:
+        notebook['cells'] = cells
 
 
 def clean_notebook(file):
+    """
+    Go through all notebook cells and strip undesired attributes. Write the file back if it was modified.
+    """
     notebook = json.load(open(file, 'r'))
-    cells = notebook['worksheets'][0]['cells'] if 'worksheets' in notebook else notebook['cells']
 
-    if any(strip_output_from_cell(cell) for cell in cells):
+    modif_cells = []
+    clean_cells = []
+    for cell in get_notebook_cells(notebook):
+        modifed, clean_cell = strip_output_from_cell(cell)
+        fixed_cells.append(modifed)
+        clean_cells.append(clean_cell)
+
+    if any(modif_cells):
         print(f"Fixing {file}")
+        set_notebook_cells(notebook, clean_cells)
         with open(file, 'w') as outfile:
             json.dump(notebook, outfile, sort_keys=True, indent=1, separators=(',', ': '))
             outfile.write('\n')
