@@ -2,7 +2,6 @@
 import json
 import sys
 
-files = sys.argv[1:]
 
 
 def strip_output_from_cell(cell):
@@ -25,13 +24,17 @@ def strip_output_from_cell(cell):
 
     return modified
 
+
 def clean_notebook(file):
     notebook = json.load(open(file, 'r'))
     cells = notebook['worksheets'][0]['cells'] if 'worksheets' in notebook else notebook['cells']
 
     if any(strip_output_from_cell(cell) for cell in cells):
+        print(f"Fixing {file}")
         json.dump(notebook, open(file, 'w'), sort_keys=True, indent=1, separators=(',', ': '))
 
 
-for file in files:
-    clean_notebook(file)
+if __name__ == "__main__":
+    files = sys.argv[1:]
+    for file in files:
+        clean_notebook(file)
