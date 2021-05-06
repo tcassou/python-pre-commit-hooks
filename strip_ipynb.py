@@ -48,7 +48,7 @@ def clean_notebook(file):
     clean_cells = []
     for cell in get_notebook_cells(notebook):
         modified, clean_cell = strip_output_from_cell(cell)
-        fixed_cells.append(modified)
+        modif_cells.append(modified)
         clean_cells.append(clean_cell)
 
     if any(modif_cells):
