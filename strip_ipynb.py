@@ -31,7 +31,9 @@ def clean_notebook(file):
 
     if any(strip_output_from_cell(cell) for cell in cells):
         print(f"Fixing {file}")
-        json.dump(notebook, open(file, 'w'), sort_keys=True, indent=1, separators=(',', ': '))
+        with open(file, 'w') as outfile:
+            json.dump(notebook, outfile, sort_keys=True, indent=1, separators=(',', ': '))
+            outfile.write('\n')
 
 
 if __name__ == "__main__":
